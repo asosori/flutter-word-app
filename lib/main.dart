@@ -149,11 +149,17 @@ class _WordListScreenState extends State<WordListScreen> {
   }
 }
 
-class Word extends StatelessWidget{
+class Word extends StatefulWidget {
+  Word({Key key}) : super(key: key);
+  @override
+  _WordState createState() => _WordState();
+}
+
+class _WordState extends State<Word> {
   @override
   Widget build(BuildContext context){
     return Container(
-      color: Colors.red,              
+      color: Colors.red,    
       child: Card(
         margin: EdgeInsets.only(bottom: 40, left: 40, right: 40),
         color: Colors.white,
