@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(MyApp());
 }
+
 class MyApp extends StatelessWidget {
 
   @override
@@ -21,7 +22,6 @@ class MyApp extends StatelessWidget {
         '/list': (context) => WordListScreen(),
         //'/edit': (context) => WordEditScreen()
       },
-      //home: WordCreateScreen(),
     );
   }
 }
@@ -34,7 +34,6 @@ class WordCreateScreen extends StatefulWidget {
 
 class _WordCreateScreenState extends State<WordCreateScreen> {
   final controller = TextEditingController();
-  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -115,39 +114,7 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
           )
         )
     );
-    return  Scaffold(
-      appBar: AppBar(
-        title: Text('単語帳アプリ'),
-        centerTitle: true,
-        leading: BackButton(color: Colors.white,),
-        ),
-      body: container,
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.white,
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _index,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              title: Text("単語作成"),
-              icon: Icon(Icons.library_add),
-            ),
-            BottomNavigationBarItem(
-              title: Text("単語一覧"),
-              icon: Icon(Icons.list)
-            )
-          ],
-          onTap: (int value){
-            if (value == 1)
-              Navigator.pushNamed(
-                context,
-                '/list'
-              );
-          },
-        ),
-      )
-    );
+    return BottomNaviBar(container: container, index: 0,);
   }
 
   void createWord(){
@@ -162,8 +129,6 @@ class WordListScreen extends StatefulWidget {
 }
 
 class _WordListScreenState extends State<WordListScreen> {
-  int _index = 1;
-
   @override
   Widget build(BuildContext context) {
     var container = SingleChildScrollView(
@@ -171,128 +136,93 @@ class _WordListScreenState extends State<WordListScreen> {
         Column(
           children: <Widget>[
             Padding(padding: EdgeInsets.only(top: 40)),
-            Container(
-              color: Colors.red,
-              child: Card(
-                margin: EdgeInsets.only(bottom: 40, left: 40, right: 40),
-                color: Colors.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
-                        return Row(
-                          children: <Widget>[
-                            Container(
-                              color: Colors.blue,
-                              width: constraints.maxWidth/2,
-                              child: Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "問題",
-                                  style: TextStyle(fontSize: 22,
-                                  )                            
-                                ),
-                              )
-                            ),
-                            Container(
-                              color: Colors.green,
-                              width: constraints.maxWidth/2,
-                              child: Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "解答",
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                  )
-                                ),
-                              )
-                            ),
-                          ],
-                        );
-                      }
-                    ),
-                    Padding(padding: EdgeInsets.all(10),),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                      child: Text(
-                        'aaa',
-                        style: TextStyle(fontSize: 18),
-                        )
-                    ),
-                    Padding(padding: EdgeInsets.only(bottom: 30),),
-                  ]
-                )
-              )
-            ),
-            Container(
-              color: Colors.red,
-              child: Card(
-                margin: EdgeInsets.only(bottom: 40, left: 40, right: 40),
-                color: Colors.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
-                        return Row(
-                          children: <Widget>[
-                            Container(
-                              color: Colors.blue,
-                              width: constraints.maxWidth/2,
-                              child: Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "問題",
-                                  style: TextStyle(fontSize: 22,
-                                  )                            
-                                ),
-                              )
-                            ),
-                            Container(
-                              color: Colors.green,
-                              width: constraints.maxWidth/2,
-                              child: Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "解答",
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                  )
-                                ),
-                              )
-                            ),
-                          ],
-                        );
-                      }
-                    ),
-                    Padding(padding: EdgeInsets.all(10),),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                      child: Text(
-                        'aaa',
-                        style: TextStyle(fontSize: 18),
-                        )
-                    ),
-                    Padding(padding: EdgeInsets.only(bottom: 30),),
-                  ]
-                )
-              )
-            )
+            Word(),
+            Word()
           ],
         )
     );
-    return  Scaffold(
+    return BottomNaviBar(container: container, index: 1,);
+  }
+
+  void createWord(){
+    print("ボタンが押されたよ");
+  }
+}
+
+class Word extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return Container(
+      color: Colors.red,              
+      child: Card(
+        margin: EdgeInsets.only(bottom: 40, left: 40, right: 40),
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return Row(
+                  children: <Widget>[
+                    Container(
+                      color: Colors.blue,
+                      width: constraints.maxWidth/2,
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "問題",
+                          style: TextStyle(fontSize: 22,
+                          )                            
+                        ),
+                      )
+                    ),
+                    Container(
+                      color: Colors.green,
+                      width: constraints.maxWidth/2,
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "解答",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
+                          )
+                        ),
+                      )
+                    ),
+                  ],
+                );
+              }
+            ),
+            Padding(padding: EdgeInsets.all(10),),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              child: Text(
+                'aaa',
+                style: TextStyle(fontSize: 18),
+                )
+            ),
+            Padding(padding: EdgeInsets.only(bottom: 30),),
+          ]
+        )
+      )
+    );
+  }
+}
+
+class BottomNaviBar extends StatelessWidget{
+  final Widget container;
+  final int index;
+
+  BottomNaviBar({this.container, this.index});
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
       appBar: AppBar(
         title: Text('単語帳アプリ'),
         centerTitle: true,
@@ -304,7 +234,7 @@ class _WordListScreenState extends State<WordListScreen> {
           canvasColor: Colors.white,
         ),
         child: BottomNavigationBar(
-          currentIndex: _index,
+          currentIndex: index,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               title: Text("単語作成"),
@@ -316,18 +246,20 @@ class _WordListScreenState extends State<WordListScreen> {
             )
           ],
           onTap: (int value){
-            if (value == 0)
+            if (value == 0){
               Navigator.pushNamed(
                 context,
                 '/'
               );
+            } else if (value == 1) {
+                Navigator.pushNamed(
+                  context,
+                  '/list'
+                );   
+            }
           },
         ),
       )
     );
-  }
-
-  void createWord(){
-    print("ボタンが押されたよ");
   }
 }
