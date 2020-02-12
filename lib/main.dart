@@ -114,7 +114,7 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
           )
         )
     );
-    return BottomNaviBar(container: container, index: 0,);
+    return BaseScreen(container: container, index: 0,);
   }
 
   void createWord(){
@@ -141,7 +141,7 @@ class _WordListScreenState extends State<WordListScreen> {
           ],
         )
     );
-    return BottomNaviBar(container: container, index: 1,);
+    return BaseScreen(container: container, index: 1,);
   }
 
   void createWord(){
@@ -156,75 +156,101 @@ class Word extends StatefulWidget {
 }
 
 class _WordState extends State<Word> {
+  bool _isQuestion;
+
+  Widget _wordCard(String word){
+    return Container(
+            child: Card(
+              margin: EdgeInsets.only(bottom: 40, left: 40, right: 40),
+              color: Colors.white,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints constraints) {
+                      return Row(
+                        children: <Widget>[
+                          Container(
+                            color: Colors.blue,
+                            width: constraints.maxWidth/2,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(3),
+                            child: FlatButton(
+                              onPressed: _displayQuestion,
+                              color: Colors.red,
+                              child: Text(
+                                "問題",
+                                style: TextStyle(fontSize: 22)
+                              )
+                            )        
+                          ),
+                          Container(
+                            color: Colors.green,
+                            width: constraints.maxWidth/2,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(3),
+                            child: FlatButton(
+                              onPressed: _displayAnswer,
+                              color: Colors.red,
+                              child: Text(
+                                "解答",
+                                style: TextStyle(fontSize: 22)
+                              )
+                            )        
+                          ),
+                        ],
+                      );
+                    }
+                  ),
+                  Padding(padding: EdgeInsets.all(10),),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    child: Text(
+                      "$word",
+                      style: TextStyle(fontSize: 18),
+                      )
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 30),),
+                ]
+              )
+            )
+          );
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _isQuestion = true; 
+  }
+
   @override
   Widget build(BuildContext context){
-    return Container(
-      color: Colors.red,    
-      child: Card(
-        margin: EdgeInsets.only(bottom: 40, left: 40, right: 40),
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return Row(
-                  children: <Widget>[
-                    Container(
-                      color: Colors.blue,
-                      width: constraints.maxWidth/2,
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          "問題",
-                          style: TextStyle(fontSize: 22,
-                          )                            
-                        ),
-                      )
-                    ),
-                    Container(
-                      color: Colors.green,
-                      width: constraints.maxWidth/2,
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          "解答",
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white
-                          )
-                        ),
-                      )
-                    ),
-                  ],
-                );
-              }
-            ),
-            Padding(padding: EdgeInsets.all(10),),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-              child: Text(
-                'aaa',
-                style: TextStyle(fontSize: 18),
-                )
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 30),),
-          ]
-        )
-      )
-    );
+    if (_isQuestion) {
+      return _wordCard('flutter');
+    } else {
+      return _wordCard('フラッター');
+    }
+  }
+
+  void _displayQuestion(){
+    setState(() {
+      _isQuestion = true;
+    });
+  }
+
+  void _displayAnswer(){
+    setState(() {
+      _isQuestion = false;
+    });
   }
 }
 
-class BottomNaviBar extends StatelessWidget{
+class BaseScreen extends StatelessWidget{
   final Widget container;
   final int index;
 
-  BottomNaviBar({this.container, this.index});
+  BaseScreen({this.container, this.index});
 
   @override
   Widget build(BuildContext context){
