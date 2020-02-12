@@ -34,10 +34,11 @@ class WordCreateScreen extends StatefulWidget {
 
 class _WordCreateScreenState extends State<WordCreateScreen> {
   final controller = TextEditingController();
+  Widget _bodyContent;
 
   @override
   Widget build(BuildContext context) {
-    var container = SingleChildScrollView(
+    _bodyContent = SingleChildScrollView(
       child:
         Container(
           child: Card(
@@ -114,7 +115,7 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
           )
         )
     );
-    return BaseScreen(container: container, index: 0,);
+    return BaseScreen(bodyContent: _bodyContent, index: 0,);
   }
 
   void createWord(){
@@ -129,9 +130,11 @@ class WordListScreen extends StatefulWidget {
 }
 
 class _WordListScreenState extends State<WordListScreen> {
+  Widget _bodyContent;
+
   @override
   Widget build(BuildContext context) {
-    var container = SingleChildScrollView(
+    _bodyContent = SingleChildScrollView(
       child:
         Column(
           children: <Widget>[
@@ -141,7 +144,7 @@ class _WordListScreenState extends State<WordListScreen> {
           ],
         )
     );
-    return BaseScreen(container: container, index: 1,);
+    return BaseScreen(bodyContent: _bodyContent, index: 1,);
   }
 
   void createWord(){
@@ -206,12 +209,25 @@ class _WordState extends State<Word> {
                   Padding(padding: EdgeInsets.all(10),),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    child: Text(
-                      "$word",
-                      style: TextStyle(fontSize: 18),
-                      )
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "$word",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(Icons.edit),
+                            Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 5),),
+                            Icon(Icons.delete)
+                          ],
+                        )
+                      ]
+                    )
+                    
                   ),
-                  Padding(padding: EdgeInsets.only(bottom: 30),),
+                  Padding(padding: EdgeInsets.only(bottom: 20),),
                 ]
               )
             )
@@ -247,10 +263,10 @@ class _WordState extends State<Word> {
 }
 
 class BaseScreen extends StatelessWidget{
-  final Widget container;
+  final Widget bodyContent;
   final int index;
 
-  BaseScreen({this.container, this.index});
+  BaseScreen({this.bodyContent, this.index});
 
   @override
   Widget build(BuildContext context){
@@ -260,7 +276,7 @@ class BaseScreen extends StatelessWidget{
         centerTitle: true,
         leading: BackButton(color: Colors.white,),
         ),
-      body: container,
+      body: bodyContent,
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Colors.white,
