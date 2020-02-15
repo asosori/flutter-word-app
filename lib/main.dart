@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './screen/WordCreateScreen.dart';
 import './screen/WordListScreen.dart';
+import './screen/WordEditScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => WordCreateScreen(),
         '/list': (context) => WordListScreen(),
-        //'/edit': (context) => WordEditScreen()
+        '/edit': (context) => WordEditScreen()
       },
     );
   }
