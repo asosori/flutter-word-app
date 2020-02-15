@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as Path;
 import 'package:collection/collection.dart';
 import 'package:sqflite/sqflite.dart';
 import './layout/BaseScreen.dart';
@@ -74,7 +74,7 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
                 Padding(padding: EdgeInsets.only(bottom: 30),),
                 Center(
                   child: RaisedButton(
-                  onPressed: this.createWord,
+                  onPressed: this.submitWord,
                   color: Colors.teal,
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -98,12 +98,26 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
     return BaseScreen(bodyContent: _bodyContent, index: 0,);
   }
 
-  void createWord() async {
-    String dbPath = await getDatabasesPath();
-    String path = join(dbPath, "mydata.db");
-
+  void submitWord(){
     String questionWord = _questionController.text;
     String answerWord = _answerController.text;
+
+    if (questionWord == "" || answerWord == "") {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text("エラー"),
+          content: Text("問題か解答のどちらかが空欄になっているので、単語を作成できませんでした。")
+          )
+      );
+    } else {
+      createWord(questionWord, answerWord);
+    }
+  }
+
+  void createWord(questionWord, answerWord) async {
+    String dbPath = await getDatabasesPath();
+    String path = Path.join(dbPath, "mydata.db");
 
     String query = 'INSERT INTO words(question, answer) VALUES("$questionWord", "$answerWord")';
 
