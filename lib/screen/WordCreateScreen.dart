@@ -110,7 +110,7 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
     Database database = await openDatabase(path, version: 1,
       onCreate: (Database db, int version) async {
         await db.execute(
-          "CREATE TABLE IF NOT EXISTS words (id INTEGER PRIMARY KEY, question TEXT, answer TEXT"
+          "CREATE TABLE IF NOT EXISTS words (id INTEGER PRIMARY KEY, question TEXT NOT NULL, answer TEXT NOT NULL)"
         );
       }
     );
