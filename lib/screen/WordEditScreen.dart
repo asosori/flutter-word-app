@@ -75,7 +75,7 @@ class _WordEditScreenState extends State<WordEditScreen> {
                 Center(
                   child: RaisedButton(
                   onPressed: this.submitWord,
-                  color: Colors.teal,
+                  color: Colors.orange,
                   child: Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
