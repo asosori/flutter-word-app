@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:path/path.dart';
 import 'package:collection/collection.dart';
 import 'package:sqflite/sqflite.dart';
@@ -11,7 +12,8 @@ class WordCreateScreen extends StatefulWidget {
 }
 
 class _WordCreateScreenState extends State<WordCreateScreen> {
-  final controller = TextEditingController();
+  final _questionController = TextEditingController();
+  final _answerController = TextEditingController();
   Widget _bodyContent;
 
   @override
@@ -39,7 +41,7 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                   child: TextFormField(
-                  controller: controller,
+                  controller: _questionController,
                   maxLines: 3,
                   decoration: InputDecoration(
                     labelText: "問題を入力してください",
@@ -61,7 +63,7 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                   child: TextFormField(
-                  controller: controller,
+                  controller: _answerController,
                   maxLines: 3,
                   decoration: InputDecoration(
                     labelText: "解答を入力してください",
@@ -72,7 +74,7 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
                 Padding(padding: EdgeInsets.only(bottom: 30),),
                 Center(
                   child: RaisedButton(
-                  onPressed: createWord,
+                  onPressed: this.createWord,
                   color: Colors.teal,
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -96,7 +98,30 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
     return BaseScreen(bodyContent: _bodyContent, index: 0,);
   }
 
-  void createWord(){
-    print("ボタンが押されました");
+  void createWord() async {
+    String dbPath = await getDatabasesPath();
+    String path = join(dbPath, "mydata.db");
+
+    String questionWord = _questionController.text;
+    String answerWord = _answerController.text;
+
+    String query = 'INSERT INTO words(question, answer) VALUES("$questionWord", "$answerWord")';
+
+    Database database = await openDatabase(path, version: 1,
+      onCreate: (Database db, int version) async {
+        await db.execute(
+          "CREATE TABLE IF NOT EXISTS words (id INTEGER PRIMARY KEY, question TEXT, answer TEXT"
+        );
+      }
+    );
+
+    await database.transaction((txn) async {
+      await txn.rawInsert(query);
+    });
+
+    setState(() {
+      _questionController.text = '';
+      _answerController.text = '';
+    });
   }
 }
