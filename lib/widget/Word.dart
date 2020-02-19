@@ -18,10 +18,24 @@ class Word extends StatefulWidget {
 
 class _WordState extends State<Word> {
   bool _isQuestion;
+  final Color color = Color(0xFFf9f7f0);
+
+  @override
+  void initState(){
+    super.initState();
+    _isQuestion = true; 
+  }
+
+  @override
+  Widget build(BuildContext context){
+    if (_isQuestion) {
+      return wordCard(widget.question);
+    } else {
+      return wordCard(widget.answer);
+    }
+  }
 
   Widget wordCard(String word){
-    final Color color = Color(0xFFf9f7f0);
-
     return Container(
       child: Card(
         margin: EdgeInsets.only(bottom: 40, left: 40, right: 40),
@@ -38,30 +52,25 @@ class _WordState extends State<Word> {
                       width: constraints.maxWidth/2,
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(3),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 5.0, color: Color(0xFF4577f4), ),
-                        ),
-                        color: color,
-                      ),
+                      decoration: _selectedBoxDecoration(_isQuestion),
                       child: FlatButton(
                         onPressed: this._displayQuestion,
                         child: Text(
                           "問題",
-                          style: TextStyle(color: Colors.blue ,fontSize: 22, fontWeight: FontWeight.bold)
+                          style: _selectedTextStyle(_isQuestion)
                         )
-                      )     
+                      )
                     ),
                     Container(
                       width: constraints.maxWidth/2,
-                      color: color,
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(3),
+                      decoration: _selectedBoxDecoration(!_isQuestion),
                       child: FlatButton(
                         onPressed: this._displayAnswer,
                         child: Text(
                           "解答",
-                          style: TextStyle(fontSize: 22)
+                          style: _selectedTextStyle(!_isQuestion)
                         )
                       )        
                     ),
@@ -95,18 +104,33 @@ class _WordState extends State<Word> {
     );
   }
 
-  @override
-  void initState(){
-    super.initState();
-    _isQuestion = true; 
+  BoxDecoration _selectedBoxDecoration(bool isQuestion){
+    if (isQuestion) {
+      return BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 5.0,
+            color: Color(0xFF4577f4),
+          ),
+        ),
+        color: color,
+      );
+    } else {
+      return BoxDecoration(
+        color: color,
+      );
+    }
   }
 
-  @override
-  Widget build(BuildContext context){
-    if (_isQuestion) {
-      return wordCard(widget.question);
+  TextStyle _selectedTextStyle(bool isQuestion){
+    if (isQuestion) {
+      return TextStyle(
+        color: Colors.blue,
+        fontSize: 22,
+        fontWeight: FontWeight.bold
+      );
     } else {
-      return wordCard(widget.answer);
+      return TextStyle(fontSize: 22);
     }
   }
 
