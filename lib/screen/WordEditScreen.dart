@@ -120,7 +120,7 @@ class _WordEditScreenState extends State<WordEditScreen> {
     String dbPath = await getDatabasesPath();
     String path = Path.join(dbPath, "mydata.db");
 
-    String query = "UPDATE words SET question=$questionWord, answer=$answerWord WHERE id=$id";
+    String query = 'UPDATE words SET question="$questionWord", answer="$answerWord" WHERE id=$id';
 
     Database database = await openDatabase(path, version: 1,
       onCreate: (Database db, int version) async {
