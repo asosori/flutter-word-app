@@ -55,7 +55,7 @@ class _WordListScreenState extends State<WordListScreen> {
 
     for (Map word in result) {
       words.add(
-        Word(question: word['question'], answer: word['answer'])
+        Word(id: word['id'], question: word['question'], answer: word['answer'])
       );
     }
 

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import '../argument/WordArguments.dart';
 
 class Word extends StatefulWidget {
+  final num id;
   final String question;
   final String answer;
 
-  Word({this.question, this.answer});
+  Word({this.id, this.question, this.answer});
 
   @override
   _WordState createState() => _WordState();
@@ -113,6 +115,6 @@ class _WordState extends State<Word> {
   }
 
   void moveEditScreen(){
-    Navigator.pushNamed(context, '/edit');
+    Navigator.pushNamed(context, '/edit', arguments: WordArguments(id: widget.id, question: widget.question, answer: widget.answer));
   }
 }

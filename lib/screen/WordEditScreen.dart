@@ -4,6 +4,7 @@ import 'package:path/path.dart' as Path;
 import 'package:collection/collection.dart';
 import 'package:sqflite/sqflite.dart';
 import './layout/BaseScreen.dart';
+import '../argument/WordArguments.dart';
 
 class WordEditScreen extends StatefulWidget {
   WordEditScreen({Key key}) : super(key: key);
@@ -12,12 +13,14 @@ class WordEditScreen extends StatefulWidget {
 }
 
 class _WordEditScreenState extends State<WordEditScreen> {
-  final _questionController = TextEditingController();
-  final _answerController = TextEditingController();
   Widget _bodyContent;
 
   @override
   Widget build(BuildContext context) {
+    final WordArguments args = ModalRoute.of(context).settings.arguments;
+    final _questionController = TextEditingController(text: args.question);
+    final _answerController = TextEditingController(text: args.answer);
+
     _bodyContent = SingleChildScrollView(
       child:
         Container(
@@ -74,7 +77,7 @@ class _WordEditScreenState extends State<WordEditScreen> {
                 Padding(padding: EdgeInsets.only(bottom: 30),),
                 Center(
                   child: RaisedButton(
-                  onPressed: this.submitWord,
+                  onPressed: () => this.submitWord(args.id, _questionController.text, _answerController.text),
                   color: Colors.orange,
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -98,9 +101,7 @@ class _WordEditScreenState extends State<WordEditScreen> {
     return BaseScreen(bodyContent: _bodyContent, index: 1);
   }
 
-  void submitWord(){
-    String questionWord = _questionController.text;
-    String answerWord = _answerController.text;
+  void submitWord(num id, String questionWord, String answerWord){
 
     if (questionWord == "" || answerWord == "") {
       showDialog(
@@ -111,15 +112,15 @@ class _WordEditScreenState extends State<WordEditScreen> {
           )
       );
     } else {
-      updateWord(questionWord, answerWord);
+      updateWord(id, questionWord, answerWord);
     }
   }
 
-  void updateWord(questionWord, answerWord) async {
+  void updateWord(num id, String questionWord, String answerWord) async {
     String dbPath = await getDatabasesPath();
     String path = Path.join(dbPath, "mydata.db");
 
-    String query = 'INSERT INTO words(question, answer) VALUES("$questionWord", "$answerWord")';
+    String query = "UPDATE words SET question=$questionWord, answer=$answerWord WHERE id=$id";
 
     Database database = await openDatabase(path, version: 1,
       onCreate: (Database db, int version) async {
@@ -130,12 +131,9 @@ class _WordEditScreenState extends State<WordEditScreen> {
     );
 
     await database.transaction((txn) async {
-      await txn.rawInsert(query);
+      await txn.rawUpdate(query);
     });
 
-    setState(() {
-      _questionController.text = '';
-      _answerController.text = '';
-    });
+    Navigator.pushNamed(context, '/list');  
   }
 }
