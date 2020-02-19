@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../argument/WordArguments.dart';
+import 'dart:async';
+import 'package:path/path.dart' as Path;
+import 'package:collection/collection.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Word extends StatefulWidget {
   final num id;
@@ -72,9 +76,8 @@ class _WordState extends State<Word> {
                   ),
                   Row(
                     children: <Widget>[
-                      IconButton(icon: const Icon(Icons.edit), onPressed: moveEditScreen),
-                      Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 5),),
-                      Icon(Icons.delete)
+                      IconButton(icon: const Icon(Icons.edit), onPressed: this.moveEditScreen),
+                      IconButton(icon: const Icon(Icons.delete), onPressed: this.deleteWordModal),
                     ],
                   )
                 ]
@@ -116,5 +119,47 @@ class _WordState extends State<Word> {
 
   void moveEditScreen(){
     Navigator.pushNamed(context, '/edit', arguments: WordArguments(id: widget.id, question: widget.question, answer: widget.answer));
+  }
+
+  void deleteWordModal(){
+    final num id = widget.id;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("確認"),
+        content: Text("この操作は取り消すことができません。削除してもよろしいでしょうか？"),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('削除する'),
+            onPressed: () => this.deleteWord(id),
+          ),
+          FlatButton(
+            child: const Text('削除しない'),
+            onPressed: () => Navigator.pushNamed(context, '/list')
+          )
+        ],
+        )
+    );
+  }
+
+  void deleteWord(num id) async {
+    String dbPath = await getDatabasesPath();
+    String path = Path.join(dbPath, "mydata.db");
+
+    String query = 'DELETE FROM words WHERE id=$id';
+
+    Database database = await openDatabase(path, version: 1,
+      onCreate: (Database db, int version) async {
+        await db.execute(
+          "CREATE TABLE IF NOT EXISTS words (id INTEGER PRIMARY KEY, question TEXT NOT NULL, answer TEXT NOT NULL)"
+        );
+      }
+    );
+
+    await database.transaction((txn) async {
+      await txn.rawDelete(query);
+    });
+
+    Navigator.pushNamed(context, '/list');
   }
 }
