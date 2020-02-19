@@ -28,8 +28,9 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Padding(padding: EdgeInsets.only(top: 30),),
                 Container(
-                  padding: EdgeInsets.only(left: 20, top: 30),
+                  alignment: Alignment.center,
                   child:
                     Text(
                       "問題",
@@ -49,9 +50,9 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
                   ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),),
+                Padding(padding: EdgeInsets.symmetric(vertical: 15, horizontal: 0),),
                 Container(
-                  padding: EdgeInsets.only(left: 20, top: 5),
+                  alignment: Alignment.center,
                   child:
                     Text(
                       "解答",

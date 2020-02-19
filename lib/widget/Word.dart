@@ -20,6 +20,8 @@ class _WordState extends State<Word> {
   bool _isQuestion;
 
   Widget wordCard(String word){
+    final Color color = Color(0xFFf9f7f0);
+
     return Container(
       child: Card(
         margin: EdgeInsets.only(bottom: 40, left: 40, right: 40),
@@ -33,27 +35,30 @@ class _WordState extends State<Word> {
                 return Row(
                   children: <Widget>[
                     Container(
-                      color: Colors.blue,
                       width: constraints.maxWidth/2,
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 5.0, color: Color(0xFF4577f4), ),
+                        ),
+                        color: color,
+                      ),
                       child: FlatButton(
                         onPressed: this._displayQuestion,
-                        color: Colors.red,
                         child: Text(
                           "問題",
-                          style: TextStyle(fontSize: 22)
+                          style: TextStyle(color: Colors.blue ,fontSize: 22, fontWeight: FontWeight.bold)
                         )
-                      )        
+                      )     
                     ),
                     Container(
-                      color: Colors.green,
                       width: constraints.maxWidth/2,
+                      color: color,
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(3),
                       child: FlatButton(
                         onPressed: this._displayAnswer,
-                        color: Colors.red,
                         child: Text(
                           "解答",
                           style: TextStyle(fontSize: 22)
