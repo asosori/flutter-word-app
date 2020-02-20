@@ -138,5 +138,12 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
       _questionController.text = '';
       _answerController.text = '';
     });
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: Text("新しく単語を作成しました！")
+      )
+    );
   }
 }
