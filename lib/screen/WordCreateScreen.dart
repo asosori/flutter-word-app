@@ -18,17 +18,18 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _bodyContent = SingleChildScrollView(
-      child:
-        Container(
+    _bodyContent = Align(
+      alignment: Alignment.center,
+      child: SingleChildScrollView(
+        child: Container(
+          height: 410,
           child: Card(
-            margin: EdgeInsets.only(top: 40, left: 60, right: 60),
+            margin: EdgeInsets.only(left: 60, right: 60),
             color: Colors.white,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Padding(padding: EdgeInsets.only(top: 30),),
                 Container(
                   alignment: Alignment.center,
                   child:
@@ -43,7 +44,6 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                   child: TextFormField(
                   controller: _questionController,
-                  maxLines: 3,
                   decoration: InputDecoration(
                     labelText: "問題を入力してください",
                     border: OutlineInputBorder()
@@ -65,14 +65,13 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                   child: TextFormField(
                   controller: _answerController,
-                  maxLines: 3,
                   decoration: InputDecoration(
                     labelText: "解答を入力してください",
                     border: OutlineInputBorder()
                   ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(bottom: 30),),
+                Padding(padding: EdgeInsets.only(bottom: 40),),
                 Center(
                   child: RaisedButton(
                   onPressed: this.submitWord,
@@ -90,11 +89,11 @@ class _WordCreateScreenState extends State<WordCreateScreen> {
                   )
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(bottom: 30),),
               ]
             )
           )
-        )
+        ),
+      )
     );
     return BaseScreen(bodyContent: _bodyContent, index: 0,);
   }

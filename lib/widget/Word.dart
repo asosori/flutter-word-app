@@ -38,11 +38,11 @@ class _WordState extends State<Word> {
   Widget wordCard(String word){
     return Container(
       child: Card(
-        margin: EdgeInsets.only(bottom: 40, left: 40, right: 40),
+        margin: EdgeInsets.only(bottom: 20, left: 40, right: 40),
         color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
@@ -50,8 +50,8 @@ class _WordState extends State<Word> {
                   children: <Widget>[
                     Container(
                       width: constraints.maxWidth/2,
+                      height: 30,
                       alignment: Alignment.center,
-                      padding: EdgeInsets.all(3),
                       decoration: _selectedBoxDecoration(_isQuestion),
                       child: FlatButton(
                         onPressed: this._displayQuestion,
@@ -63,8 +63,8 @@ class _WordState extends State<Word> {
                     ),
                     Container(
                       width: constraints.maxWidth/2,
+                      height: 30,
                       alignment: Alignment.center,
-                      padding: EdgeInsets.all(3),
                       decoration: _selectedBoxDecoration(!_isQuestion),
                       child: FlatButton(
                         onPressed: this._displayAnswer,
@@ -78,15 +78,18 @@ class _WordState extends State<Word> {
                 );
               }
             ),
-            Padding(padding: EdgeInsets.all(10),),
             Container(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              height: 40,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    "$word",
-                    style: TextStyle(fontSize: 18),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "$word",
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
                   Row(
                     children: <Widget>[
@@ -97,7 +100,6 @@ class _WordState extends State<Word> {
                 ]
               )
             ),
-            Padding(padding: EdgeInsets.only(bottom: 20),),
           ]
         )
       )
@@ -109,7 +111,7 @@ class _WordState extends State<Word> {
       return BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            width: 5.0,
+            width: 3,
             color: Color(0xFF4577f4),
           ),
         ),
@@ -126,11 +128,11 @@ class _WordState extends State<Word> {
     if (isQuestion) {
       return TextStyle(
         color: Colors.blue,
-        fontSize: 22,
+        fontSize: 16,
         fontWeight: FontWeight.bold
       );
     } else {
-      return TextStyle(fontSize: 22);
+      return TextStyle(fontSize: 16);
     }
   }
 
